@@ -63,16 +63,16 @@ data "aws_eks_cluster_auth" "cluster" {
   name = aws_eks_cluster.eks-cluster.name
 }
 
-# provider "kubernetes" {
-#   host                   = aws_eks_cluster.eks-cluster.cluster_endpoint
-#   cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca)
-#   token                  = data.aws_eks_cluster_auth.cluster.token
+provider "kubernetes" {
+  host                   = aws_eks_cluster.eks-cluster.cluster_endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca_certificate)
+  token                  = data.aws_eks_cluster_auth.cluster.token
 
-# }
+}
 
 # provider "kubectl" {
 #   host                   = aws_eks_cluster.eks-cluster.cluster_endpoint
-#   cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca)
+#   cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca_certificate)
 #   exec {
 #     api_version = "client.authentication.k8s.io/v1beta1"
 #     command     = "aws"
@@ -89,12 +89,12 @@ resource "null_resource" "update_kubeconfig" {
   }
 }
 
-resource "helm_release" "nginx_ingress" {
-  name       = "nginx-ingress"
-  namespace  = "kube-system"
-  chart      = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
+# resource "helm_release" "nginx_ingress" {
+#   name       = "nginx-ingress"
+#   namespace  = "kube-system"
+#   chart      = "ingress-nginx"
+#   repository = "https://kubernetes.github.io/ingress-nginx"
   
-  depends_on = [aws_eks_cluster.eks-cluster]
-}
+#   depends_on = [aws_eks_cluster.eks-cluster]
+# }
 

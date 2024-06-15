@@ -17,10 +17,10 @@ terraform {
       version = ">= 2.10.0"
     }
 
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = ">= 1.14"
-    }
+    # kubectl = {
+    #   source  = "gavinbunney/kubectl"
+    #   version = "~>1.14"
+    # }
   }
   backend "s3" {
     bucket = "liorm-jfrog-tfstate"
