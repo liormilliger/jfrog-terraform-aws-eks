@@ -17,7 +17,7 @@ Helm provider is provisioned to install EBS-CSI Driver to enable kubernetes pvcs
 
 Before you start terraform - you will need to edit few things:
 
-1. Update ```./variables.tf``` with your s3 bucket name
+1. Update ```./main.tf``` with your s3 bucket name
 
 ```
 variable "bucket_name" {

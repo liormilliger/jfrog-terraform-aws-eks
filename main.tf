@@ -23,8 +23,8 @@ terraform {
     # }
   }
   backend "s3" {
-    bucket = var.bucket_name
-    key    = var.tfstate_folder
+    bucket = "liorm-jfrog-tfstate"
+    key    = "data/terraform.tfstate"
     region = "us-east-1"
 
   }
