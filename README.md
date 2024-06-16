@@ -8,3 +8,82 @@ Helm provider is provisioned to install EBS-CSI Driver to enable kubernetes pvcs
 1. AWS Account
 2. Terraform installed
 3. AWSCLI installed and configured with the right credentials
+4. Create credentials for your AWS IAM USER
+5. Create Secret in SecretManager with your IAM USER CREDENTIALS (You would need its ARN)
+5. Create an S3 bucket with a unique name, and within it a folder named data
+
+## Operate
+
+Before you start terraform - you will need to edit few things:
+
+1. Update ./variables.tf with your s3 bucket name
+variable "bucket_name" {
+  description = "S3 bucket as a backend"
+  default = "<Your Bucket Name>"
+}
+
+2. Update ./resources/vpc-network/variables.tf
+with cluster name and vpc name and if needed - cidr blocks
+
+3. update ./resources/eks-cluster/variables.tf
+change resource names with your name prefix, all but this:
+
+variable "CredSecret" {
+  default = "<Your AWS Secret Name>"
+}
+
+now all should be rea
+
+
+
+terraform init
+From the working directory in which main.tf run terraform init
+this command will initialize terraform and install the required providers
+
+terraform plan
+
+terraform apply --auto-approve
+
+
+## Modules Structure
+
+|-main.tf
+|-variables.tf
+|
+|- resources
+|   |
+|   |-eks-cluster
+|   |   |
+|   |   |-eks.tf
+|   |   |-node-group.tf
+|   |   |-variables.tf
+|   |
+|   |-vpc-network
+|   |   |
+|   |   |-igw.tf
+|   |   |-outputs.tf
+|   |   |-routes.tf
+|   |   |-subnets.tf
+|   |   |-variables.tf
+|   |   |-vpc.tf
+|
+|-terraform.tfvars
+
+This structure contains 2 modules - one for vpc (./resources/vpc-network) and one for the cluster (./resources/eks-cluster)
+These modules are being called through the main.tf that resides in our root working folder
+
+### ROOT WORKING FOLDER
+
+this folder will contain main.tf file that will declare providers and modules,
+variable.tf file to contain dynamic info as variables
+it may contain outputs.tf file if we want to output anything to stdout at the end of the terraform apply process
+and it can contain terraform.tfvars file that will hold secrets and info that we dont want to share
+
+### EKS CLUSTER MODULE
+
+
+### VPC MODULE
+When setting up AWS EKS cluster - it requires setting up a vpc as well, hence the vpc module.
+
+In the vpc module we set the cidr block for the vpc (vpc.tf), the subnets (subnets.tf), internet gateway (igw.tf), routing tables and routes association to the routing table (routes.tf)
+
