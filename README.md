@@ -8,9 +8,10 @@ Helm provider is provisioned to install EBS-CSI Driver to enable kubernetes pvcs
 1. AWS Account
 2. Terraform installed
 3. AWSCLI installed and configured with the right credentials
-4. Create credentials for your AWS IAM USER
-5. Create Secret in SecretManager with your IAM USER CREDENTIALS (You would need its ARN)
-5. Create an S3 bucket with a unique name, and within it a folder named data
+4. kubectl installed
+5. Create credentials for your AWS IAM USER
+6. Create Secret in SecretManager with your IAM USER CREDENTIALS (You would need its ARN)
+7. Create an S3 bucket with a unique name, and within it a folder named data
 
 ## Operate
 
@@ -32,7 +33,7 @@ variable "CredSecret" {
   default = "<Your AWS Secret Name>"
 }
 
-now all should be rea
+now all should be ready - save all files!!!
 
 
 
@@ -74,14 +75,26 @@ These modules are being called through the main.tf that resides in our root work
 
 ### ROOT WORKING FOLDER
 
-this folder will contain main.tf file that will declare providers and modules,
+This folder will contain main.tf file that will declare providers and modules,
 variable.tf file to contain dynamic info as variables
 it may contain outputs.tf file if we want to output anything to stdout at the end of the terraform apply process
 and it can contain terraform.tfvars file that will hold secrets and info that we dont want to share
 
 ### EKS CLUSTER MODULE
 
+This module contains 2 primary files and a variables.tf file.
+the variables.tf file allows to concentrate all our dynamic input in one place and to use it
+as variables within the 2 other files.
 
+eks.tf
+this file contains the IAM roles and definition for the EKS cluster,
+it also has the helm provider and EBS-CSI secret we created in the pre-requisites to install EBS-CSI-Driver 
+
+node-group.tf
+A cluster needs nodes in order to work. This file creates a node group with all the IAM roles and permissions
+including node names and scaling config
+
+s
 ### VPC MODULE
 When setting up AWS EKS cluster - it requires setting up a vpc as well, hence the vpc module.
 
