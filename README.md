@@ -17,58 +17,43 @@ Helm provider is provisioned to install EBS-CSI Driver to enable kubernetes pvcs
 
 Before you start terraform - you will need to edit few things:
 
-1. Update ./variables.tf with your s3 bucket name
+1. Update ```./variables.tf``` with your s3 bucket name
+
+```
 variable "bucket_name" {
   description = "S3 bucket as a backend"
   default = "<Your Bucket Name>"
 }
+```
 
-2. Update ./resources/vpc-network/variables.tf
+2. Update ```./resources/vpc-network/variables.tf```
 with cluster name and vpc name and if needed - cidr blocks
 
-3. update ./resources/eks-cluster/variables.tf
+3. update ```./resources/eks-cluster/variables.tf```
 change resource names with your name prefix, all but this:
 
+```
 variable "CredSecret" {
   default = "<Your AWS Secret Name>"
 }
+```
 
 now all should be ready - save all files!!!
 
 
 
-terraform init
+```terraform init```
 From the working directory in which main.tf run terraform init
 this command will initialize terraform and install the required providers
 
-terraform plan
+```terraform plan```
+See that all resources and plan goes without errors
 
-terraform apply --auto-approve
+```terraform apply --auto-approve```
 
 
 ## Modules Structure
-
-|-main.tf
-|-variables.tf
-|
-|- resources
-|   |
-|   |-eks-cluster
-|   |   |
-|   |   |-eks.tf
-|   |   |-node-group.tf
-|   |   |-variables.tf
-|   |
-|   |-vpc-network
-|   |   |
-|   |   |-igw.tf
-|   |   |-outputs.tf
-|   |   |-routes.tf
-|   |   |-subnets.tf
-|   |   |-variables.tf
-|   |   |-vpc.tf
-|
-|-terraform.tfvars
+<img width="177" alt="Screenshot 2024-06-16 at 14 51 14" src="https://github.com/liormilliger/jfrog-terraform-aws-eks/assets/64707466/79d08ced-40a3-4b6d-bb74-cbc2dd6abb98">
 
 This structure contains 2 modules - one for vpc (./resources/vpc-network) and one for the cluster (./resources/eks-cluster)
 These modules are being called through the main.tf that resides in our root working folder
@@ -94,7 +79,6 @@ node-group.tf
 A cluster needs nodes in order to work. This file creates a node group with all the IAM roles and permissions
 including node names and scaling config
 
-s
 ### VPC MODULE
 When setting up AWS EKS cluster - it requires setting up a vpc as well, hence the vpc module.
 
