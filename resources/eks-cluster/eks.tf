@@ -63,9 +63,13 @@ data "aws_eks_cluster_auth" "cluster" {
   name = aws_eks_cluster.eks-cluster.name
 }
 
+data "aws_eks_cluster" "eks-cluster" {
+  name = var.cluster_name
+}
+
 provider "kubernetes" {
-  host                   = aws_eks_cluster.eks-cluster.cluster_endpoint
-  cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca_certificate)
+  host                   = aws_eks_cluster.eks-cluster.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks-cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
 
 }
@@ -98,3 +102,34 @@ resource "null_resource" "update_kubeconfig" {
 #   depends_on = [aws_eks_cluster.eks-cluster]
 # }
 
+
+# Credentials for EBS-CSI-DRIVER
+
+data "aws_secretsmanager_secret" "aws-credentials" {
+  arn = "arn:aws:secretsmanager:us-east-1:035274893828:secret:liorm-aws-credentials-Mrmk2g"
+}
+
+data "aws_secretsmanager_secret_version" "ebs-csi-secret" {
+  secret_id = data.aws_secretsmanager_secret.aws-credentials.id
+}
+
+resource "kubernetes_secret" "csi_secret" {
+  metadata {
+    name = "aws-secret"
+  }
+
+  data = {
+    key = data.aws_secretsmanager_secret_version.ebs-csi-secret.id
+  }
+}
+
+# CSI Driver Release
+resource "helm_release" "csi-driver" {
+  name = "aws-ebs-csi-driver"
+  namespace = "kube-system"
+
+  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
+  chart      = "aws-ebs-csi-driver"
+
+  depends_on = [ kubernetes_secret.csi_secret ]
+}

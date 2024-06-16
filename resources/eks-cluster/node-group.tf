@@ -31,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "liorm-ec2-container-registry-read-onl
 resource "aws_eks_node_group" "node-group" {
   cluster_name    = var.cluster_name
   version         = var.cluster_version
-  node_group_name = "liorm-node-group"
+  node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.liorm-node-group-role.arn
 
   subnet_ids = [
@@ -39,12 +39,12 @@ resource "aws_eks_node_group" "node-group" {
     local.public-us-east-1b-id
   ]
 
-  capacity_type  = "ON_DEMAND"
-  instance_types = ["m5.xlarge"]
+  capacity_type  = var.capacity_type
+  instance_types = var.instance_types
 
   scaling_config {
-    desired_size = 2
-    max_size     = 5
+    desired_size = var.desired_size
+    max_size     = var.max_size
     min_size     = 0
   }
 
@@ -54,7 +54,7 @@ resource "aws_eks_node_group" "node-group" {
 
   labels = {
     role = "general"
-    nodeName = "liorm-node"
+    nodeName = var.node_name
   }
   
   launch_template {
@@ -88,7 +88,7 @@ resource "aws_launch_template" "naming-nodes" {
     resource_type = "instance"
     
     tags = {
-      Name = "liorm-node"
+      Name = var.node_name
     }
   }
 }
