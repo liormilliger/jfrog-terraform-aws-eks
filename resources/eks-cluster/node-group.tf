@@ -13,6 +13,11 @@ resource "aws_iam_role" "liorm-node-group-role" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "liorm-eks-csi-ebs-node-policy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.liorm-node-group-role.name
+}
+
 resource "aws_iam_role_policy_attachment" "liorm-eks-worker-node-policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.liorm-node-group-role.name
