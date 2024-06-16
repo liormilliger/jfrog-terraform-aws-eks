@@ -73,7 +73,7 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 
 }
-
+# ## Use this when you want to execute kubectl commands from TF
 # provider "kubectl" {
 #   host                   = aws_eks_cluster.eks-cluster.cluster_endpoint
 #   cluster_ca_certificate = base64decode(aws_eks_cluster.eks-cluster.cluster_ca_certificate)
@@ -93,20 +93,10 @@ resource "null_resource" "update_kubeconfig" {
   }
 }
 
-# resource "helm_release" "nginx_ingress" {
-#   name       = "nginx-ingress"
-#   namespace  = "kube-system"
-#   chart      = "ingress-nginx"
-#   repository = "https://kubernetes.github.io/ingress-nginx"
-  
-#   depends_on = [aws_eks_cluster.eks-cluster]
-# }
-
-
 # Credentials for EBS-CSI-DRIVER
 
 data "aws_secretsmanager_secret" "aws-credentials" {
-  arn = "arn:aws:secretsmanager:us-east-1:035274893828:secret:liorm-aws-credentials-Mrmk2g"
+  arn = "arn:aws:secretsmanager:${var.REGION}:${var.ACCOUNT}:secret:${var.CredSecret}"
 }
 
 data "aws_secretsmanager_secret_version" "ebs-csi-secret" {

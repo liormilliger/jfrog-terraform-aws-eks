@@ -12,6 +12,18 @@ variable "cluster_version" {
   default = "1.29"
 }
 
+variable "REGION" {
+  default = "us-east-1"
+}
+
+variable "ACCOUNT" {
+  default = "035274893828"
+}
+
+variable "CredSecret" {
+  default = "liorm-aws-credentials-Mrmk2g"
+}
+
 ####< NETWORK VARS >####
 locals {
   private-us-east-1a-id = module.subnet_ids.private_subnet_ids[0]
