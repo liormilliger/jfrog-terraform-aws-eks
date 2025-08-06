@@ -40,8 +40,8 @@ resource "aws_eks_node_group" "node-group" {
   node_role_arn   = aws_iam_role.liorm-node-group-role.arn
 
   subnet_ids = [
-    local.public-us-east-1a-id,
-    local.public-us-east-1b-id
+    local.public-eu-west-1a-id,
+    local.public-eu-west-1b-id
   ]
 
   capacity_type  = var.capacity_type
@@ -88,7 +88,7 @@ resource "aws_eks_node_group" "node-group" {
 # Naming Nodes
 resource "aws_launch_template" "naming-nodes" {
   name = "naming-nodes"
-  
+  # image_id = "ami-0d64bb532e0502c46" ##ubuntu 22.04 LTS for eu-west-1
   tag_specifications {
     resource_type = "instance"
     

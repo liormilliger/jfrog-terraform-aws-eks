@@ -13,7 +13,7 @@ variable "cluster_version" {
 }
 
 variable "REGION" {
-  default = "us-east-1"
+  default = "eu-west-1"
 }
 
 variable "ACCOUNT" {
@@ -21,15 +21,19 @@ variable "ACCOUNT" {
 }
 
 variable "CredSecret" {
-  default = "liorm-aws-credentials-Mrmk2g"
+  default = "liorm-aws-credentials-iGQ1qf"
+}
+
+variable "EbsCredSecret" {
+  default = "ebs-csi-secret-SLA4bc"
 }
 
 ####< NETWORK VARS >####
 locals {
-  private-us-east-1a-id = module.subnet_ids.private_subnet_ids[0]
-  private-us-east-1b-id = module.subnet_ids.private_subnet_ids[1]
-  public-us-east-1a-id  = module.subnet_ids.public_subnet_ids[0]
-  public-us-east-1b-id  = module.subnet_ids.public_subnet_ids[1]
+  private-eu-west-1a-id = module.subnet_ids.private_subnet_ids[0]
+  private-eu-west-1b-id = module.subnet_ids.private_subnet_ids[1]
+  public-eu-west-1a-id  = module.subnet_ids.public_subnet_ids[0]
+  public-eu-west-1b-id  = module.subnet_ids.public_subnet_ids[1]
 }
 
 ####< NODE VARS >####
@@ -43,7 +47,7 @@ variable "capacity_type" {
 }
 
 variable "instance_types" {
-  default = ["m5.xlarge"]
+  default = ["t3a.xlarge"]
 }
 
 variable "max_size" {

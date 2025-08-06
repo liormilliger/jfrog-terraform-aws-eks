@@ -15,6 +15,8 @@ Helm provider is provisioned to install EBS-CSI Driver to enable kubernetes pvcs
 
 ## Operate
 
+```aws sso login```
+set the aws eks context: ```aws eks --region us-east-1 update-kubeconfig --name liorm-eks-cluster```
 Before you start terraform - you will need to edit few things:
 
 1. Update ```./main.tf``` with your s3 bucket name
