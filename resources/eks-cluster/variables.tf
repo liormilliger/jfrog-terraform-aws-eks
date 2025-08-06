@@ -1,32 +1,33 @@
-module "subnet_ids" {
-  source = "../vpc-network/"
-}
-
-####< CLUSTER VARS >####
-
 variable "cluster_name" {
-  default = "liorm-eks-cluster"
+  description = "Name of the EKS cluster."
+  type        = string
 }
 
 variable "cluster_version" {
-  default = "1.29"
+  description = "Kubernetes version for the EKS cluster."
+  type        = string
 }
 
 variable "REGION" {
-  default = "eu-west-1"
+  description = "AWS region where the resources will be deployed."
+  type        = string
 }
 
 variable "ACCOUNT" {
-  default = "035274893828"
+  description = "AWS account ID."
+  type        = string
 }
 
 variable "CredSecret" {
-  default = "liorm-aws-credentials-iGQ1qf"
+  description = "Name of the AWS credentials secret."
+  type        = string
 }
 
 variable "EbsCredSecret" {
-  default = "ebs-csi-secret-SLA4bc"
+  description = "Name of the EBS CSI driver secret."
+  type        = string
 }
+
 
 ####< NETWORK VARS >####
 locals {
@@ -39,25 +40,31 @@ locals {
 ####< NODE VARS >####
 
 variable "node_group_name" {
-  default = "liorm-node-group"
+  description = "Name of the EKS node group."
+  type        = string
 }
 
 variable "capacity_type" {
-  default = "ON_DEMAND"
+  description = "Capacity type for the node group (e.g., ON_DEMAND, SPOT)."
+  type        = string
 }
 
 variable "instance_types" {
-  default = ["t3a.xlarge"]
+  description = "List of instance types for the node group."
+  type        = list(string)
 }
 
 variable "max_size" {
-  default = "4"
+  description = "Maximum number of nodes in the node group."
+  type        = number
 }
 
 variable "desired_size" {
-  default = "2"
+  description = "Desired number of nodes in the node group."
+  type        = number
 }
 
 variable "node_name" {
-  default = "liorm-node"
+  description = "Base name for the EKS nodes."
+  type        = string
 }
