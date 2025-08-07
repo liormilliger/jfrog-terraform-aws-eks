@@ -18,7 +18,9 @@ provider "helm" {
 #   host                   = aws_eks_cluster.eks-cluster.endpoint
 #   cluster_ca_certificate = base64decode(data.aws_eks_cluster.eks-cluster.certificate_authority.0.data)
 #   token                  = data.aws_eks_cluster_auth.cluster.token
-
+#   # depends_on = [
+#   #   aws_eks_cluster.this
+#   # ]
 # }
 # ## Use this when you want to execute kubectl commands from TF
 # provider "kubectl" {
