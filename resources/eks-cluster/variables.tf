@@ -31,10 +31,20 @@ variable "EbsCredSecret" {
 
 ####< NETWORK VARS >####
 locals {
-  private-eu-west-1a-id = module.subnet_ids.private_subnet_ids[0]
-  private-eu-west-1b-id = module.subnet_ids.private_subnet_ids[1]
-  public-eu-west-1a-id  = module.subnet_ids.public_subnet_ids[0]
-  public-eu-west-1b-id  = module.subnet_ids.public_subnet_ids[1]
+  private-us-east-1a-id = var.private_subnet_ids[0]
+  private-us-east-1b-id = var.private_subnet_ids[1]
+  public-us-east-1a-id  = var.public_subnet_ids[0]
+  public-us-east-1b-id  = var.public_subnet_ids[1]
+}
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs from the VPC module."
+  type        = list(string)
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs from the VPC module."
+  type        = list(string)
 }
 
 ####< NODE VARS >####

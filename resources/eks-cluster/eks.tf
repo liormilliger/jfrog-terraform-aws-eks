@@ -41,10 +41,10 @@ resource "aws_eks_cluster" "eks-cluster" {
 
   vpc_config {
     subnet_ids = [
-      local.private-eu-west-1a-id,
-      local.private-eu-west-1b-id,
-      local.public-eu-west-1a-id,
-      local.public-eu-west-1a-id
+      local.private-us-east-1a-id,
+      local.private-us-east-1b-id,
+      local.public-us-east-1a-id,
+      local.public-us-east-1b-id
     ]
   }
 
